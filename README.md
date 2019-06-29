@@ -69,6 +69,16 @@ DOCKER,ALL          DOCKER,BINARY_SCAN    DOCKER,NONE         DOCKER,SIGNATURE_S
 DOCKER,BAZEL        DOCKER,DETECTOR       DOCKER,POLARIS
 ```
 
+# Caveats
+
+* I have observed that the options described in the documentation don't always
+agree with the implementation. So you may encounter options that are not
+correctly completed, or completed options that are not supported.
+
+* At present this script is hard-coded to version `5.5.0` of Detect, so you
+may need to hack that for other versions. In the future, I'll make it work for
+all versions.
+
 # Author
 
 Jeffrey Ryan Thalhammer <jeff@thaljef.org>
