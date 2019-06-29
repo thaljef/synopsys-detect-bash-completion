@@ -22,7 +22,12 @@ _complete_option_from_help()
     local detect_jar='/tmp/synopsys-detect-5.5.0.jar'
     local detect_options='/tmp/synopsys-detect-5.5.0.options'
 
-    if [ $detect_jar -nt $detect_options ] ; then
+    if [ ! -r $detect_jar ]; then
+        echo Completions not available until Detect has been bootstrapped.
+        return 0
+    fi
+
+    if [ $detect_jar -nt $detect_options ]; then
         java -jar $detect_jar -hv | awk '$1 ~ /^--/ { print $1 }' > $detect_options
     fi
 
