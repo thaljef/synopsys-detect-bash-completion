@@ -1,12 +1,13 @@
-# Bash Completions For Black Duck Detect
+# Bash Completions For Synopsys (Black Duck) Detect
 
-Suggests options and parameters to complete Black Duck Detect commands
+Suggests options and parameters to complete Synopsys (Black Duck) Detect
+commands
 
 # Installation
 
-In all cases, you simply need to install the appropriate bash completion package
-(if not already installed) and then copy the `detect` completion script from
-this repository into the right directory. For example:
+In all cases, you simply need to install the appropriate bash completion
+package (if not already installed) and then copy the `detect` completion
+script from this repository into the right directory. For example:
 
 ```bash
 sudo apt-get install bash-completion
@@ -14,20 +15,24 @@ curl -sL https://raw.githubusercontent.com/thaljef/synopsys-detect-bash-completi
 bash -l; # To start new shell
 ```
 
-In some cases, you may need to explicitly load the completion framework into your
-shell. This is usually done by adding something like `source /etc/bash_completion`
-to your `~\.bashrc` file.
+In some cases, you may need to explicitly load the completion framework into
+your shell. This is usually done by adding something like `source
+/etc/bash_completion` to your `~\.bashrc` file.
 
-The actual directory for your bash completion scripts and the exact command to load them
-into your shell will vary by Linux distro and version. The above is just an example;
-consult your distro docs for more specific guidance.
+The actual directory for your bash completion scripts and the exact command to
+load them into your shell will vary by Linux distro and version. The above is
+just an example; consult your distro docs for more specific guidance.
 
 # Usage
 
-Typically, the bash completion mechanism relies on having a _named command_ to bind
-the completions to. However, it is customary to execute Detect with a bootstrap script hosted by Synopsys. This bootstrap cannot be used for bash completion.
+Typically, the bash completion mechanism relies on having a _named command_ to
+bind the completions to. However, it is customary to execute Detect with a
+bootstrap script hosted by Synopsys. This bootstrap cannot be used for bash
+completion.
 
-So to use these completions, it is necessary to create put the bootstrap in a _named command._ The following must be placed in an executable file named `detect` and that file should be in a directory that is in your `$PATH`:
+So to use these completions, it is necessary to create put the bootstrap in a
+_named command._ The following must be placed in an executable file named
+`detect` and that file should be in a directory that is in your `$PATH`:
 
 ```bash
 #!/bin/bash
