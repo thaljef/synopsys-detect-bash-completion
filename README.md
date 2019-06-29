@@ -1,7 +1,7 @@
-# Bash Completions For Synopsys (Black Duck) Detect
+# Bash Completion For Synopsys (Black Duck) Detect
 
 Suggests options and parameters to complete Synopsys (Black Duck) Detect
-commands
+commands.
 
 # Installation
 
@@ -42,7 +42,7 @@ bash <(curl -s -L https://detect.synopsys.com/detect.sh) $*
 # Examples
 
 Option names:
-```bash
+```
 $> detect --detect.docker.[TAB][TAB]
 --detect.docker.image=                   --detect.docker.inspector.version=    --detect.docker.tar=
 --detect.docker.inspector.air.gap.path=  --detect.docker.path.required=
@@ -50,7 +50,7 @@ $> detect --detect.docker.[TAB][TAB]
 ```
 
 Option parameters:
-```bash
+```
 $> detect --detect.project.tier=[TAB][TAB]
 1  2  3  4  5
 
@@ -59,7 +59,7 @@ false  true
 ```
 
 Option parameter lists:
-```bash
+```
 $> detect --detect.project.tools=[TAB][TAB]
 ALL             BINARY_SCAN     DOCKER          POLARIS
 BAZEL           DETECTOR        NONE            SIGNATURE_SCAN
