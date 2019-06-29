@@ -49,7 +49,7 @@ $> detect --detect.docker.[TAB][TAB]
 --detect.docker.inspector.path=          --detect.docker.path=
 ```
 
-Option values:
+Option parameters:
 ```bash
 $> detect --detect.project.tier=[TAB][TAB]
 1  2  3  4  5
@@ -58,7 +58,7 @@ $> detect --detect.trust.cert=[TAB][TAB]
 false  true
 ```
 
-Option value lists:
+Option parameter lists:
 ```bash
 $> detect --detect.project.tools=[TAB][TAB]
 ALL             BINARY_SCAN     DOCKER          POLARIS
