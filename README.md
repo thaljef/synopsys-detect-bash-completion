@@ -25,13 +25,13 @@ just an example; consult your distro docs for more specific guidance.
 
 # Usage
 
-Typically, the bash completion mechanism relies on having a _named command_ to
-bind the completions to. However, it is customary to execute Detect with a
-bootstrap script hosted by Synopsys. This bootstrap cannot be used for bash
+The bash completion mechanism relies on having a _named command_ to bind the
+completions to. However, it is customary to execute Detect via a remote
+bootstrapping script. This execution process cannot be used with bash
 completion.
 
-So to use these completions, it is necessary to create put the bootstrap in a
-_named command._ The following must be placed in an executable file named
+Therefore, to use these completions it is necessary to do the bootstrapping in
+a _named command._ The following must be placed in an executable file named
 `detect` and that file should be in a directory that is in your `$PATH`:
 
 ```bash
