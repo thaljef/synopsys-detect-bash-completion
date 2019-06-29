@@ -18,9 +18,7 @@ _complete_option_from_help()
     # TODO: Need better exception handling here. Check that `java`
     # and `awk` are available; check `bash` version is compatible.
 
-    local cur
-    cur=$1
-
+    local cur=$1
     local detect_jar='/tmp/synopsys-detect-5.5.0.jar'
     local detect_options='/tmp/synopsys-detect-5.5.0.options'
 
@@ -43,9 +41,8 @@ _complete_option_param_list()
     # excluded from the suggestions. A space will not be
     # automatiacally appended when a word is completed.
 
-    local completions word
-    completions=$1
-    word=$2
+    local completions=$1
+    local word=$2
 
     if [[ "$word" == *,* ]]; then
         local curparam params
@@ -73,9 +70,8 @@ _complete_option_param()
     # complete, a space is automatically appended to move the cursor
     # to the next word.
 
-    local completions word
-    completions=$1
-    word=$2
+    local completions=$1
+    local word=$2
 
     compopt +o nospace
     COMPREPLY=($(compgen -W "$completions" -- $word))
@@ -149,8 +145,18 @@ _detect_completion()
         FULL_SNIPPET_MATCHING_ONLY\
         NONE"
 
-     local cur prev words cword
-     _init_completion -n =
+    # The command will be parsed *without* treating "=" as a word
+    # boundary. This means cur will always have a trailing "=" when it
+    # is completed, so all arguments evetually end up in the form "--
+    # option=param"
+
+    local cur prev words cword
+    _init_completion -n =
+
+    # If the current word contains an "=" then split it and set the
+    # previous word to the option name and the current word into the
+    # option parameter. That allows us to complete the option
+    # parameter separately.
 
     if [[ "$cur" == *"="* ]] ; then
         temp=(${cur//=/ })
