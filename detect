@@ -1,0 +1,227 @@
+#!/bin/bash
+
+#-----------------------------------------------------------------------------
+
+_complete_option_from_help()
+{
+    # Completes a word with command-line options found in the
+    # documentation for `detect`. Since it takes a while for `detect`
+    # to start up, the options are first extracted from the
+    # documentation and cached in a text file for faster access.
+
+    # TODO: Honor variables used by the detect.sh bootstrapper, so
+    # that we use the same java, java options, jar file, etc.
+
+    # TODO: Figure out how to remove hard-coded versions in the
+    # `detect` jar, so that upgrades can happen invisibly.
+
+    # TODO: Need better exception handling here. Check that `java`
+    # and `awk` are available; check `bash` version is compatible.
+
+    local cur
+    cur=$1
+
+    local detect_jar='/tmp/synopsys-detect-5.5.0.jar'
+    local detect_options='/tmp/synopsys-detect-5.5.0.options'
+
+    if [ $detect_jar -nt $detect_options ] ; then
+        java -jar $detect_jar -hv | awk '$1 ~ /^--/ { print $1 }' > $detect_options
+    fi
+
+    COMPREPLY=($(compgen -S = -W "$(cat $detect_options)" -- $cur))
+
+    return 0
+}
+
+#-----------------------------------------------------------------------------
+
+_complete_option_param_list()
+{
+    # Completes a word as a comma-delimited list of parameters. If the
+    # word ends in a comma, then additional parameters are suggested
+    # for the list. Parameters that have already been specified are
+    # excluded from the suggestions. A space will not be
+    # automatiacally appended when a word is completed.
+
+    local completions word
+    completions=$1
+    word=$2
+
+    if [[ "$word" == *,* ]]; then
+        local curparam params
+        curparam=${word##*,}
+        params=${word%,*}
+
+        # params cannot be repeated, so
+        # deleted params we have already
+        # entered from the completions
+        for del in ${params//,/ }; do
+            completions=${completions/"$del"/}
+        done
+
+        COMPREPLY=($(compgen -W "$completions" -P "${params}," -- $curparam))
+    else
+        COMPREPLY=($(compgen -W "$completions" -- $word))
+    fi
+}
+
+#-----------------------------------------------------------------------------
+
+_complete_option_param()
+{
+    # Completes a word as a single parameter. Once the parameter is
+    # complete, a space is automatically appended to move the cursor
+    # to the next word.
+
+    local completions word
+    completions=$1
+    word=$2
+
+    compopt +o nospace
+    COMPREPLY=($(compgen -W "$completions" -- $word))
+}
+
+#-----------------------------------------------------------------------------
+
+_detect_completion()
+{
+    # Completion function for the `detect` command. All arguments have
+    # the form "--option=value". If the value is supposed to be a list
+    # of comma-separated words, then those words will also be
+    # completed. If the value is supposed to be true|false, or a path
+    # to a file or directory, then those values will be completed too.
+
+    _detect_log_levels="\
+        TRACE\
+        DEBUG\
+        INFO\
+        WARN\
+        ERROR\
+        FATAL\
+        OFF"
+
+    _detect_project_tools="\
+        DETECTOR\
+        DOCKER\
+        BAZEL"
+
+    _detect_tools="\
+        BAZEL\
+        DETECTOR\
+        DOCKER\
+        SIGNATURE_SCAN\
+        BINARY_SCAN\
+        POLARIS\
+        NONE\
+        ALL"
+
+    _detect_severities="\
+        ALL\
+        BLOCKER\
+        CRITICAL\
+        MAJOR\
+        MINOR\
+        TRIVIAL\
+        UNSPECIFIED"
+
+    _detect_clone_categories="\
+        COMPONENT_DATA\
+        VULN_DATA"
+
+    _detect_distributions="\
+        EXTERNAL\
+        SAAS\
+        INTERNAL\
+        OPENSOURCE"
+
+    _detect_phases="\
+        ARCHIVED\
+        DEPRECATED\
+        DEVELOPMENT\
+        PLANNING\
+        PRERELEASE\
+        RELEASED"
+
+    _detect_snippet_matching="\
+        SNIPPET_MATCHING\
+        SNIPPET_MATCHING_ONLY\
+        FULL_SNIPPET_MATCHING\
+        FULL_SNIPPET_MATCHING_ONLY\
+        NONE"
+
+     local cur prev words cword
+     _init_completion -n =
+
+    if [[ "$cur" == *"="* ]] ; then
+        temp=(${cur//=/ })
+        prev=${temp[0]}
+        cur=${temp[1]}
+    fi
+
+    case $prev in
+        *path | *tar)
+            _filedir
+            ;;
+        --blackduck.trust.cert | --blackduck.offline.mode | --detect.disable.without.blackduck | --detect.test.connection)
+            _complete_option_param "true false" $cur
+            ;;
+        *.mode | *.continue | *.exclusion.defaults)
+            _complete_option_param "true false" $cur
+            ;;
+        --detect.cleanup | --detect.detector.buildless | --detect.force.success | --detect.ignore.connection.failures | --detect.wait.for.results)
+            _complete_option_param "true false" $cur
+            ;;
+        --detect.suppress.configuration.output | --detect.suppress.results.output)
+            _complete_option_param "true false" $cur
+            ;;
+        --detect.npm.include.dev.dependencies | --detect.nuget.ignore.failure | --detect.packagist.include.dev.dependencies)
+            _complete_option_param "$_detect_log_levels" $cur
+            ;;
+        --logging.level.com.blackducksoftware.integration)
+            _complete_option_param "$_detect_log_levels" $cur
+            ;;
+        --logging.level.com.synopsys.integration)
+            _complete_option_param "$_detect_log_levels" $cur
+            ;;
+        --detect.tools)
+            _complete_option_param_list "$_detect_tools" $cur
+            ;;
+        --detect.tools.excluded)
+            _complete_option_param_list "$_detect_tools" $cur
+            ;;
+        --detect.project.tool)
+            _complete_option_param_list "$_detect_project_tools" $cur
+            ;;
+        --detect.policy.check.fail.on.severities)
+            _complete_option_param_list "$_detect_severities" $cur
+            ;;
+        --detect.project.clone.categories)
+            _complete_option_param_list "$_detect_clone_categories" $cur
+            ;;
+        --detect.project.tier)
+            compopt +o nospace
+            COMPREPLY=($(compgen -W "1 2 3 4 5" -- $cur))
+            ;;
+        --detect.project.version.distribution)
+            _complete_option_param "$_detect_distributions" $cur
+            ;;
+        --detect.project.version.phase)
+            _complete_option_param "$_detect_phases" $cur
+            ;;
+        --detect.blackduck.signature.scanner.snippet.matching)
+            _complete_option_param "$_detect_snippet_matching" $cur
+            ;;
+        *)
+            _complete_option_from_help $cur
+    esac
+
+    return 0
+}
+
+#-----------------------------------------------------------------------------
+
+# Now bind the completion function to a command named `detect` By
+# default, we do not automatically append spaces to a finished
+# completion so that we can use "=" as the separator instead.
+
+complete -o nospace -F _detect_completion detect
