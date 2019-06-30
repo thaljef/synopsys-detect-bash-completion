@@ -30,9 +30,10 @@ completions to. However, it is customary to execute Detect via a remote
 bootstrapping script. This execution process cannot be used with bash
 completion.
 
-Therefore, to use these completions it is necessary to do the bootstrapping in
-a _named command._ The following must be placed in an executable file named
-`detect` and that file should be in a directory that is in your `$PATH`:
+Therefore, it is necessary to do that bootstrapping in a named command in
+order to use these completions for Detect. The following must be placed in an
+executable file named `detect` and that file should be in a directory that is
+in your `$PATH`:
 
 ```bash
 #!/bin/bash
@@ -72,21 +73,26 @@ DOCKER,BINARY_SCAN     DOCKER,POLARIS
 # Compatibility
 
 This completion script is known to work with bash 4.x or 5.x which is found in
-any recent Linux distro. It will most likely *not* work with bash 3.x or
-older. For Windowe, use either Cygwin or the Linux Subsytem for Windows 10 to
-get a compatible shell. MacOS has an ancient version of bash, so you'll
-probably need to install homebrew and install both the `bash` and `bash-
-completion2` brews.
+any recent Linux distro. It will probalby work with recent versions of zsh
+too. It will most likely *not* work with bash 3.x or older. For Windowe, use
+either Cygwin or the Linux Subsytem for Windows 10 to get a compatible shell.
+MacOS has an ancient version of bash, so you'll probably need to install
+homebrew and install both the `bash` and `bash-completion2` brews.
 
 # Caveats
 
-* I have observed that the options described in the documentation don't always
-agree with the implementation. So you may encounter options that are not
-correctly completed, or completed options that are not supported.
+* The completions are derived from the documentation for Detect. But the
+options described in the documentation don't always agree with the
+implementation. So you may encounter options that are not correctly completed,
+or completed options that are not supported.
 
-* At present this script is hard-coded to version `5.5.0` of Detect, so you
-may need to hack that for other versions. In the future, I'll make it work for
-all versions.
+* At present this script is hard-coded to look for version `5.5.0` of Detect,
+so you will need to hack that if you are using a different version or change
+versions down the road. In the future, I will improve this.
+
+* The Detect bootstrapping optionally uses certain environment variables.
+Ideally, those same variables should be used here too. But at the moment, they
+are not. So if you use those variables, it may affect the completions.
 
 # Author
 
