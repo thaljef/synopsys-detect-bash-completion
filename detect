@@ -18,7 +18,7 @@ _complete_option_from_help()
     # TODO: Need better exception handling here. Check that `java`
     # and `awk` are available; check `bash` version is compatible.
 
-    local cur=$1
+    local word=$1
     local detect_jar='/tmp/synopsys-detect-5.5.0.jar'
     local detect_options='/tmp/synopsys-detect-5.5.0.options'
 
@@ -31,7 +31,7 @@ _complete_option_from_help()
         java -jar $detect_jar -hv | awk '$1 ~ /^--/ { print $1 }' > $detect_options
     fi
 
-    COMPREPLY=($(compgen -S = -W "$(cat $detect_options)" -- $cur))
+    COMPREPLY=($(compgen -S = -W "$(cat $detect_options)" -- $word))
 
     return 0
 }
