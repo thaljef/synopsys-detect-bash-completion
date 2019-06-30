@@ -56,10 +56,21 @@ _complete_option_param_list()
 
         # params cannot be repeated, so
         # deleted params we have already
-        # entered from the completions
+        # entered from the possible completions
         for del in ${params//,/ }; do
             completions=${completions/"$del"/}
         done
+
+        if [[ $params =~ '^(ALL|NONE)\b' ]]; then
+            # Some param lists can have a value of ALL or NONE.
+            # In either case, all other completions become unnecessary.
+            completions=""
+        else
+            # And if the param list does *not* contain ALL or NONE,
+            # then ALL and NONE become unnecessary completions.
+            completions=${completions/ALL/}
+            completions=${completions/NONE/}
+        fi
 
         COMPREPLY=($(compgen -W "$completions" -P "${params}," -- $curparam))
     else
