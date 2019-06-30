@@ -167,7 +167,7 @@ _detect_completion()
     # option=param"
 
     local cur prev words cword
-    _init_completion -n =
+    _init_completion -n = || return
 
     # If the current word contains an "=" then split it and set the
     # previous word to the option name and the current word into the
