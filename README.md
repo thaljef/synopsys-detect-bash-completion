@@ -12,7 +12,7 @@ For example:
 
 ```bash
 sudo apt install bash-completion
-sudo curl -sL https://raw.githubusercontent.com/thaljef/synopsys-detect-bash-completion/master/detect > /etc/bash_completion.d/detect
+sudo sh -c 'curl -sL https://raw.githubusercontent.com/thaljef/synopsys-detect-bash-completion/master/detect > /etc/bash_completion.d/detect'
 bash -l; # To start new shell
 ```
 
