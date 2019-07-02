@@ -74,8 +74,8 @@ DOCKER,BINARY_SCAN     DOCKER,POLARIS
 # Compatibility
 
 This completion script is known to work with bash 4.x or 5.x which is found in
-any recent Linux distro. It will probalby work with recent versions of zsh
-too. It will most likely *not* work with bash 3.x or older. For Windowe, use
+any recent Linux distro. It will probably work with recent versions of zsh
+too. It will probably *not* work with bash 3.x or older. For Windows, use
 either Cygwin or the Linux Subsytem for Windows 10 to get a compatible shell.
 MacOS has an ancient version of bash, so you'll probably need to install
 homebrew and install both the `bash` and `bash-completion2` brews.
