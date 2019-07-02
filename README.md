@@ -7,11 +7,12 @@ commands.
 
 In all cases, you simply need to install the appropriate bash completion
 package (if not already installed) and then copy the `detect` completion
-script from this repository into the right directory. For example:
+script from this repository into the right directory for your system.
+For example:
 
 ```bash
-sudo apt-get install bash-completion
-curl -sL https://raw.githubusercontent.com/thaljef/synopsys-detect-bash-completion/master/detect > /etc/bash_completion.d/detect
+sudo apt install bash-completion
+sudo curl -sL https://raw.githubusercontent.com/thaljef/synopsys-detect-bash-completion/master/detect > /etc/bash_completion.d/detect
 bash -l; # To start new shell
 ```
 
