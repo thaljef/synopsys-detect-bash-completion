@@ -87,10 +87,6 @@ options described in the documentation don't always agree with the
 implementation. So you may encounter options that are not correctly completed,
 or completed options that are not supported.
 
-* At present this script is hard-coded to look for version `5.5.0` of Detect,
-so you will need to hack that if you are using a different version or change
-versions down the road. In the future, I will improve this.
-
 * The Detect bootstrapping optionally uses certain environment variables.
 Ideally, those same variables should be used here too. But at the moment, they
 are not. So if you use those variables, it may affect the completions.

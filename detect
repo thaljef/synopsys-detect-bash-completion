@@ -2,36 +2,41 @@
 
 #-----------------------------------------------------------------------------
 
+# Bash completions for Synopsys (Black Duck) Detect commands.
+# See https://synopsys.atlassian.net/wiki/spaces/INTDOCS/pages/62423113/Synopsys+Detect
+
+#-----------------------------------------------------------------------------
+
 _complete_option_from_help()
 {
     # Completes a word with command-line options found in the
-    # documentation for `detect`. Since it takes a while for `detect`
+    # documentation for Detect. Since it takes a while for Detect
     # to start up, the options are first extracted from the
     # documentation and cached in a text file for faster access.
 
     # TODO: Honor variables used by the detect.sh bootstrapper, so
     # that we use the same java, java options, jar file, etc.
 
-    # TODO: Figure out how to remove hard-coded versions in the
-    # `detect` jar, so that upgrades can happen invisibly.
-
     # TODO: Need better exception handling here. Check that `java`
     # and `awk` are available; check `bash` version is compatible.
 
     local word=$1
-    local detect_jar='/tmp/synopsys-detect-5.5.0.jar'
-    local detect_options='/tmp/synopsys-detect-5.5.0.options'
+    local detect_jars=($(ls -r /tmp/synopsys-detect*.jar 2> /dev/null))
+    local latest_detect_jar=${detect_jars[0]}
+    local latest_detect_options=${latest_detect_jar}.options
 
-    if [ ! -r $detect_jar ]; then
-        echo Completions not available until Detect has been bootstrapped.
+    if [ ! ${latest_detect_jar} ]; then
+        printf "\nCompletions are not available until Detect has been bootstrapped.\n"
         return 0
     fi
 
-    if [ $detect_jar -nt $detect_options ]; then
-        java -jar $detect_jar -hv | awk '$1 ~ /^--/ { print $1 }' > $detect_options
+    if [ $latest_detect_jar -nt $latest_detect_options ]; then
+        printf "\nOne moment while we cache completions for %s..." `basename $latest_detect_jar`
+        java -jar $latest_detect_jar -hv | awk '$1 ~ /^--/ { print $1 }' > $latest_detect_options
+        printf "done.\n"
     fi
 
-    COMPREPLY=($(compgen -S = -W "$(cat $detect_options)" -- $word))
+    COMPREPLY=($(compgen -S = -W "$(cat $latest_detect_options)" -- $word))
 
     return 0
 }
@@ -55,8 +60,8 @@ _complete_option_param_list()
         params=${word%,*}
 
         # params cannot be repeated, so
-        # deleted params we have already
-        # entered from the possible completions
+        # delete params we have already
+        # entered from the completions
         for del in ${params//,/ }; do
             completions=${completions/"$del"/}
         done
