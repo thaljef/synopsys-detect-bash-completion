@@ -21,7 +21,7 @@ _complete_option_from_help()
     # and `awk` are available; check `bash` version is compatible.
 
     local word=$1
-    local detect_jars=($(ls -r /tmp/synopsys-detect*.jar 2> /dev/null))
+    local detect_jars=($(ls -t $HOME/synopsys-detect/download/synopsys-detect*.jar /tmp/synopsys-detect*.jar 2> /dev/null))
     local latest_detect_jar=${detect_jars[0]}
     local latest_detect_options=${latest_detect_jar}.options
 
