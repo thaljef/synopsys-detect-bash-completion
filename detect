@@ -32,9 +32,10 @@ _complete_option_from_help()
 
     if [ $latest_detect_jar -nt $latest_detect_options ]; then
         printf "\nOne moment while we cache completions for %s..." `basename $latest_detect_jar`
-        java -jar $latest_detect_jar -hv | awk '$1 ~ /^--/ { print $1 }' > $latest_detect_options
+        java -jar $latest_detect_jar -hv | sed -n 's/^\(--[[:alnum:].]*\).*$/\1/p' > $latest_detect_options
         printf "done.\n"
     fi
+
 
     COMPREPLY=($(compgen -S = -W "$(cat $latest_detect_options)" -- $word))
 
